@@ -1,36 +1,34 @@
 // "Create" stub created by 'zapier convert'. This is just a stub - you will need to edit!
 const { replaceVars } = require('../utils');
-const makeRequest = (z, bundle) => {
-  
+
+
+const makeRequest = (z, bundle) => {  
   let url = 'https://rest-ww.telesign.com/v1/messaging';
   url = replaceVars(url, bundle);
 
-  // Exclude create fields that uncheck "Send to Action Endpoint URL in JSON body"
-  // https://zapier.com/developer/documentation/v2/action-fields/#send-to-action-endpoint-url-in-json-body
   const responsePromise = z.request({
     url: url,
     method: 'POST',
-    body: 'phone_number='+bundle.inputData.country_code+bundle.inputData.phone_number+'&message='+bundle.inputData.message+'&message_type='+bundle.inputData.message_type,
-    //body: bundle.inputData,
+    body: 'phone_number='+bundle.inputData.phone_number+'&message='+bundle.inputData.message+'&message_type='+bundle.inputData.message_type,
+  
     headers: {
       'Content-Type': 'application/json'
     }
-    //body: 'phone_number=917009600580&message=Your message here&message_type=ARN'
+  
   });
-  return responsePromise.then(response => {
-    console.log('In creates>send_sms');
+  return responsePromise.then(response => {    
     response.throwForStatus();
     return z.JSON.parse(response.content);
   });
 };
 
 module.exports = {
-  key: 'send_sms',
+  key: 'send_email_to_sms',
   noun: 'Sms',
 
   display: {
-    label: 'Send SMS',
-    description: 'Sends SMS to given phone number.',
+    label: 'Send SMS Notification',
+    description: 'Use this when sending SMS to given phone number having country code appended.',
     hidden: false,
     important: true
   },
@@ -52,24 +50,17 @@ module.exports = {
           'This parameter specifies the traffic type being sent in the message. You can provide one of the following values:\nOTP - One time passwords\nARN - Alerts, reminders, and notifications\nMKT - Marketing traffic.',
         type: 'string',
         required: true,
-        // default: 'ARN',
-        // choices: {
-        //   OTP: 'One time passwords',
-        //   ARN: 'Alerts, reminders,and notifications',
-        //   MKT: 'Marketing traffic'
-        // }
-      },
-      {
-        key: 'country_code',
-        label: 'Country Code',
-        helpText: 'Please enter the country Code.',
-        type: 'string',
-        required: true
-      },
+        default: 'ARN',
+        choices: {
+          OTP: 'One time passwords',
+          ARN: 'Alerts, reminders,and notifications',
+          MKT: 'Marketing traffic'
+        }
+      },      
       {
         key: 'phone_number',
         label: 'Phone Number',
-        helpText: 'Please enter the Phone Number.',
+        helpText: 'Please enter Country code + Phone Number.',
         type: 'string',
         required: true
       }

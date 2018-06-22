@@ -1,36 +1,35 @@
 // "Create" stub created by 'zapier convert'. This is just a stub - you will need to edit!
 const { replaceVars } = require('../utils');
-const makeRequest = (z, bundle) => {
-  
-  let url = 'https://rest-ww.telesign.com/v1/messaging';
-  url = replaceVars(url, bundle);
 
-  // Exclude create fields that uncheck "Send to Action Endpoint URL in JSON body"
-  // https://zapier.com/developer/documentation/v2/action-fields/#send-to-action-endpoint-url-in-json-body
+
+const makeRequest = (z, bundle) => {  
+  let url = 'https://rest-ww.telesign.com/v1/voice';
+  url = replaceVars(url, bundle);
+  let voiceParam = (bundle.inputData.voice==undefined)?'f-en-US':bundle.inputData.voice
+  let countryCode = (bundle.inputData.country_code==undefined)?'':bundle.inputData.country_code
   const responsePromise = z.request({
     url: url,
     method: 'POST',
-    body: 'phone_number='+bundle.inputData.country_code+bundle.inputData.phone_number+'&message='+bundle.inputData.message+'&message_type='+bundle.inputData.message_type,
-    //body: bundle.inputData,
+    body: 'phone_number='+countryCode+bundle.inputData.phone_number + '&message='+bundle.inputData.message + '&message_type='+bundle.inputData.message_type + '&voice='+voiceParam,
+  
     headers: {
       'Content-Type': 'application/json'
     }
-    //body: 'phone_number=917009600580&message=Your message here&message_type=ARN'
+  
   });
-  return responsePromise.then(response => {
-    console.log('In creates>send_sms');
+  return responsePromise.then(response => {    
     response.throwForStatus();
     return z.JSON.parse(response.content);
   });
 };
 
 module.exports = {
-  key: 'send_sms',
-  noun: 'Sms',
+  key: 'send_call',
+  noun: 'Call',
 
   display: {
-    label: 'Send SMS',
-    description: 'Sends SMS to given phone number.',
+    label: 'Send Voice Call Notification',
+    description: "TeleSign's Voice API allows you to easily send voice messages. You can send alerts, reminders, and notifications, or you can send verification messages containing time-based one-time passcodes (TOTP).",
     hidden: false,
     important: true
   },
@@ -41,7 +40,7 @@ module.exports = {
         key: 'message',
         label: 'Message to Be Sent.',
         helpText:
-          'Text of the message to be sent to the end user. You are limited to 1600 characters or 2000 code points. If you send a very long message, TeleSign splits your message into separate parts. TeleSign recommends against sending messages that require multiple SMSes when possible.',
+          'Text of the message to be converted to a voice message and sent to the end user. You are limited to 1600 characters or 2000 code points. If you send a very long message, TeleSign splits your message into separate parts. TeleSign recommends against sending messages that require multiple SMSes when possible.',
         type: 'string',
         required: true
       },
@@ -52,26 +51,33 @@ module.exports = {
           'This parameter specifies the traffic type being sent in the message. You can provide one of the following values:\nOTP - One time passwords\nARN - Alerts, reminders, and notifications\nMKT - Marketing traffic.',
         type: 'string',
         required: true,
-        // default: 'ARN',
-        // choices: {
-        //   OTP: 'One time passwords',
-        //   ARN: 'Alerts, reminders,and notifications',
-        //   MKT: 'Marketing traffic'
-        // }
-      },
+        default: 'ARN',
+        choices: {
+          OTP: 'One time passwords',
+          ARN: 'Alerts, reminders,and notifications',
+          MKT: 'Marketing traffic'
+        }
+      },   
       {
         key: 'country_code',
         label: 'Country Code',
-        helpText: 'Please enter the country Code.',
+        helpText: 'Please enter the country Code. Otherwise you may use the Phone Number field to supply country code along with Phone Number.',
+        type: 'string',
+        required: false
+      },   
+      {
+        key: 'phone_number',
+        label: 'Phone Number',
+        helpText: 'Please enter Phone Number.',
         type: 'string',
         required: true
       },
       {
-        key: 'phone_number',
-        label: 'Phone Number',
-        helpText: 'Please enter the Phone Number.',
+        key: 'voice',
+        label: 'Voice',
+        helpText: 'The voice parameter allows you to specify a voice to be used to speak your text to speech message. If you do not specify a voice, the default f-en-US is used. For more info visit [TeleSign](https://enterprise.telesign.com/docs/voice-api#section-request-parameters)',
         type: 'string',
-        required: true
+        required: false
       }
     ],
     outputFields: [
@@ -84,6 +90,11 @@ module.exports = {
         key: 'reference_id',
         type: 'string',
         label: 'A 32-digit hex value used to identify the web service request.'
+      },
+      {
+        key: 'voice',
+        type: 'string',
+        label: 'The voice tag you selected for language appears here. If you did not use this parameter, the default f-en-US is displayed.'
       },
       {
         key: 'status__code',

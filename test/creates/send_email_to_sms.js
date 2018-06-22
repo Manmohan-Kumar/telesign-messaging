@@ -19,15 +19,14 @@ describe('Creates - Send SMS', () => {
         // TODO: Pulled from input fields' default values. Edit if necessary.
         message: 'I am coming from Zapier',
         message_type: 'ARN',
-        country_code: '91',
         phone_number: '917009600580'
       }
     };
 
-    appTester(App.creates['send_sms'].operation.perform, bundle)
+    appTester(App.creates['send_email_to_sms'].operation.perform, bundle)
       .then(result => {        
         result.should.not.be.an.Array();
-        console.log('In test>creates>send_sms');
+        console.log('In test>creates>send_email_to_sms');
         done();
       })
       .catch(done);

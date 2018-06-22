@@ -1,6 +1,6 @@
 {
   "name": "tele-sign-messaging",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A super easy to use tool for any one to Send SMS. Please get Customer Id and API Key from http://portal.telesign.com.",
   "main": "index.js",
   "scripts": {

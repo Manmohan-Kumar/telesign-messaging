@@ -3,7 +3,8 @@
 const authentication = require('./authentication');
 const InitTrigger = require('./triggers/init');
 const SendsmsCreate = require('./creates/send_sms');
-
+const SendemailtosmsCreate =require('./creates/send_email_to_sms');
+const SendcallCreate =require('./creates/send_call');
 const { replaceVars } = require('./utils');
 
 const maybeIncludeAuth = (request, z, bundle) => {
@@ -38,7 +39,9 @@ const App = {
   searches: {},
 
   creates: {
-    [SendsmsCreate.key]: SendsmsCreate
+    [SendsmsCreate.key]: SendsmsCreate,
+    [SendemailtosmsCreate.key]: SendemailtosmsCreate,
+    [SendcallCreate.key]:SendcallCreate
   }
 };
 

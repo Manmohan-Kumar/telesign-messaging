@@ -2,15 +2,18 @@
 const { replaceVars } = require('../utils');
 
 const getList = (z, bundle) => {
-  let url = 'https://rest-ww.telesign.com/v1/messaging/0123456789ABCDEF0123456789ABCDEF';
+  //let url = 'https://rest-ww.telesign.com/v1/messaging/0123456789ABCDEF0123456789ABCDEF';
+  let url = 'https://rest-ww.telesign.com/v1/messaging';
   url = replaceVars(url, bundle);
   const responsePromise = z.request({ url });
   return responsePromise.then(response => {
-    //if(response.status === 400)
-    //console.log('I am here');
+    if(response.status === 405) 
+    {
+      return 200;      
+    }
+    //console.log('In triggers>init');
     //response.throwForStatus();
     //return z.JSON.parse(response.content);
-    return 200;
   });
 };
 
@@ -40,6 +43,13 @@ module.exports = {
         type: 'string',
         //required: true,
         default: 'ARN'
+      },
+      {
+        key: 'country_code',
+        label: 'Country Code',
+        type: 'string',
+        //required: true,
+        default: '91'
       },
       {
         key: 'phone_number',
