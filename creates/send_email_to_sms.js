@@ -1,10 +1,14 @@
 // "Create" stub created by 'zapier convert'. This is just a stub - you will need to edit!
-const { replaceVars } = require('../utils');
+//const { createUrl } = require('../utils');
+//const authentication = require('../authentication');
 
-
-const makeRequest = (z, bundle) => {  
-  let url = 'https://rest-ww.telesign.com/v1/messaging';
-  url = replaceVars(url, bundle);
+const makeRequest = (z, bundle) => {    
+  const messaging_url = '/v1/messaging';
+  //console.log('baseURL: ' + bundle.authData.baseURL);
+  //url = createUrl(messaging_url, bundle);
+  baseURL = bundle.authData.baseURL;
+  url = baseURL + messaging_url;
+  // console.log(url);
 
   const responsePromise = z.request({
     url: url,
@@ -60,7 +64,7 @@ module.exports = {
       {
         key: 'phone_number',
         label: 'Phone Number',
-        helpText: 'Please enter Country code + Phone Number.',
+        helpText: 'Please enter Country code. \nExample: [UK - country code 44. France - country code 33] + Phone Number.',
         type: 'string',
         required: true
       }

@@ -1,10 +1,13 @@
 // "Create" stub created by 'zapier convert'. This is just a stub - you will need to edit!
-const { replaceVars } = require('../utils');
+//const { createUrl } = require('../utils');
+//const authentication = require('../authentication');
 
 
 const makeRequest = (z, bundle) => {  
-  let url = 'https://rest-ww.telesign.com/v1/voice';
-  url = replaceVars(url, bundle);
+  const voice_url = '/v1/voice';
+  //url = createUrl(voice_url, bundle);
+  baseURL = bundle.authData.baseURL;
+  url = baseURL + voice_url;  
   let voiceParam = (bundle.inputData.voice==undefined)?'f-en-US':bundle.inputData.voice
   let countryCode = (bundle.inputData.country_code==undefined)?'':bundle.inputData.country_code
   const responsePromise = z.request({
@@ -60,15 +63,15 @@ module.exports = {
       },   
       {
         key: 'country_code',
-        label: 'Country Code',
-        helpText: 'Please enter the country Code. Otherwise you may use the Phone Number field to supply country code along with Phone Number.',
+        label: 'Country Dialing Code',
+        helpText: 'Please enter the country Code. \nExample: UK - country code 44. France - country code 33, Otherwise you may use the Phone Number field to supply country code along with Phone Number.',
         type: 'string',
         required: false
       },   
       {
         key: 'phone_number',
         label: 'Phone Number',
-        helpText: 'Please enter Phone Number.',
+        helpText: 'Please enter Phone Number. \nPlease use Country Code + Phone Number in case the trigger puts a restriction on output fields. \nFor Example an Email App(it only has subject + body)',
         type: 'string',
         required: true
       },

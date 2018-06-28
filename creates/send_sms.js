@@ -1,9 +1,11 @@
 // "Create" stub created by 'zapier convert'. This is just a stub - you will need to edit!
-const { replaceVars } = require('../utils');
+//const { createUrl } = require('../utils');
 const makeRequest = (z, bundle) => {
-  
-  let url = 'https://rest-ww.telesign.com/v1/messaging';
-  url = replaceVars(url, bundle);
+    
+  const messaging_url = '/v1/messaging';
+  baseURL = bundle.authData.baseURL;  
+  // url = createUrl(messaging_url, bundle);
+  url = baseURL + messaging_url;
 
   // Exclude create fields that uncheck "Send to Action Endpoint URL in JSON body"
   // https://zapier.com/developer/documentation/v2/action-fields/#send-to-action-endpoint-url-in-json-body
@@ -61,8 +63,8 @@ module.exports = {
       },
       {
         key: 'country_code',
-        label: 'Country Code',
-        helpText: 'Please enter the country Code.',
+        label: 'Country Dialing Code',
+        helpText: 'Please enter the country Code. \nExample: UK - country code 44. France - country code 33.',
         type: 'string',
         required: true
       },

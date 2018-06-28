@@ -10,13 +10,15 @@ const { replaceVars } = require('./utils');
 const maybeIncludeAuth = (request, z, bundle) => {
   const mapping = {
     username: '{{customer_id}}',
-    password: '{{api_key}}'
+    password: '{{api_key}}',
+    baseURL: '{{baseURL}}'
   };
   const username = replaceVars(mapping.username, bundle);
   const password = replaceVars(mapping.password, bundle);
   const encoded = Buffer.from(`${username}:${password}`).toString('base64');
   request.headers.Authorization = `Basic ${encoded}`;
-  console.log("encode  is: " + encoded );
+  
+  //console.log("encode  is: " + encoded );
   return request;
 };
 

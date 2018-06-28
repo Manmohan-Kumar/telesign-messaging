@@ -11,13 +11,14 @@ describe('Creates - Send Call', () => {
   it('should send a call', done => {
     const bundle = {
       authData: {
+        baseURL: process.env.TS_URL,
         api_key: process.env.API_KEY,
         customer_id: process.env.CUSTOMER_ID
       },
 
       inputData: {
         // TODO: Pulled from input fields' default values. Edit if necessary.
-        message: 'I am coming from Zapier',
+        message: 'I am coming from Zapier, send call',
         message_type: 'ARN',
         phone_number: '917009600580'
       }

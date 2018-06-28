@@ -6,8 +6,8 @@ const _ = require('lodash');
 const replaceVars = (templateString, bundle, result) => {
   const options = {
     interpolate: /{{([\s\S]+?)}}/g
-  };
-  const values = _.extend({}, bundle.authData, bundle.inputData, result);
+  };  
+  const values = _.extend({}, bundle.authData, bundle.inputData, result);  
   return _.template(templateString, options)(values);
 };
 
@@ -30,7 +30,7 @@ const runBeforeMiddlewares = (request, z, bundle) => {
   }, request);
 };
 
-module.exports = {
+module.exports = {  
   replaceVars,
   runBeforeMiddlewares
 };
