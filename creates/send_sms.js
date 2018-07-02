@@ -6,13 +6,13 @@ const makeRequest = (z, bundle) => {
   baseURL = bundle.authData.baseURL;  
   // url = createUrl(messaging_url, bundle);
   url = baseURL + messaging_url;
-
+  let countryCode = (bundle.inputData.country_code==undefined)?'':bundle.inputData.country_code;
   // Exclude create fields that uncheck "Send to Action Endpoint URL in JSON body"
   // https://zapier.com/developer/documentation/v2/action-fields/#send-to-action-endpoint-url-in-json-body
   const responsePromise = z.request({
     url: url,
     method: 'POST',
-    body: 'phone_number='+bundle.inputData.country_code+bundle.inputData.phone_number+'&message='+bundle.inputData.message+'&message_type='+bundle.inputData.message_type,
+    body: 'phone_number='+countryCode+bundle.inputData.phone_number+'&message='+bundle.inputData.message+'&message_type='+bundle.inputData.message_type,
     //body: bundle.inputData,
     headers: {
       'Content-Type': 'application/json'
@@ -64,9 +64,9 @@ module.exports = {
       {
         key: 'country_code',
         label: 'Country Dialing Code',
-        helpText: 'Please enter the country Code. \nExample: UK - country code 44. France - country code 33.',
+        helpText: 'Please enter the country Code. \nExample: UK - country code 44. France - country code 33, Otherwise you may use the Phone Number field to supply country code along with Phone Number.',
         type: 'string',
-        required: true
+        required: false
       },
       {
         key: 'phone_number',

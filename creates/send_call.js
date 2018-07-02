@@ -8,8 +8,8 @@ const makeRequest = (z, bundle) => {
   //url = createUrl(voice_url, bundle);
   baseURL = bundle.authData.baseURL;
   url = baseURL + voice_url;  
-  let voiceParam = (bundle.inputData.voice==undefined)?'f-en-US':bundle.inputData.voice
-  let countryCode = (bundle.inputData.country_code==undefined)?'':bundle.inputData.country_code
+  let voiceParam = (bundle.inputData.voice==undefined)?'f-en-US':bundle.inputData.voice;
+  let countryCode = (bundle.inputData.country_code==undefined)?'':bundle.inputData.country_code;
   const responsePromise = z.request({
     url: url,
     method: 'POST',
@@ -31,7 +31,7 @@ module.exports = {
   noun: 'Call',
 
   display: {
-    label: 'Send Voice Call Notification',
+    label: 'Send Voice Call',
     description: "TeleSign's Voice API allows you to easily send voice messages. You can send alerts, reminders, and notifications, or you can send verification messages containing time-based one-time passcodes (TOTP).",
     hidden: false,
     important: true
