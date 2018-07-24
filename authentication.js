@@ -9,29 +9,25 @@ const authentication = {
   fields: [
     {
       key: 'baseURL',
-      label: 'TeleSign Url',
-      helpText: 'Please enter the TeleSign REST URL received from https://teleportal.telesign.com (For TeleSign Enterprise customers) or https://portal.telesign.com. (For TeleSign Standard customers)',
+      label: 'REST Endpoint',
+      helpText: 'REST Endpoint, Customer ID, and API Key can all be found on the Account Settings page under Settings. Navigate to Account Settings at https://portal.telesign.com/portal/account-settings. (For TeleSign Standard customers) or https://teleportal.telesign.com/ (For TeleSign Enterprise customers).',
       type: 'string',
       required: true
     },
     {
       key: 'customer_id',
-      label: 'Customer ID',
-      helpText: 'Please enter the Customer ID received from https://teleportal.telesign.com (For TeleSign Enterprise customers) or https://portal.telesign.com (For TeleSign Standard customers).',
+      label: 'Customer ID',      
       type: 'string',
       required: true
     },
     {
       key: 'api_key',
-      label: 'API Key',
-      helpText: 'Please enter the API Key received from https://teleportal.telesign.com (For TeleSign Enterprise customers) or https://portal.telesign.com (For TeleSign Standard customers).',
+      label: 'API Key',      
       type: 'password',
       required: true
     }
   ],
-  connectionLabel: '{{baseURL}}@{{customer_id}}'  
-
-  //connectionLabel: '{{customer_id}}@{{api_key}}'
+  connectionLabel: '{{baseURL}}@{{customer_id}}'    
 };
 
 module.exports = authentication;

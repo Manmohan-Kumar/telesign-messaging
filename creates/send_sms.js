@@ -19,8 +19,7 @@ const makeRequest = (z, bundle) => {
     }
     //body: 'phone_number=917009600580&message=Your message here&message_type=ARN'
   });
-  return responsePromise.then(response => {
-    console.log('In creates>send_sms');
+  return responsePromise.then(response => {    
     response.throwForStatus();
     return z.JSON.parse(response.content);
   });
@@ -32,7 +31,7 @@ module.exports = {
 
   display: {
     label: 'Send SMS',
-    description: 'Sends SMS to given phone number.',
+    description: 'Sends a SMS to a given phone number.',
     hidden: false,
     important: true
   },
@@ -41,37 +40,34 @@ module.exports = {
     inputFields: [
       {
         key: 'message',
-        label: 'Message to Be Sent.',
+        label: 'Message',
         helpText:
-          'Text of the message to be sent to the end user. You are limited to 1600 characters or 2000 code points. If you send a very long message, TeleSign splits your message into separate parts. TeleSign recommends against sending messages that require multiple SMSes when possible.',
-        type: 'string',
+          'The message limit is 1600 characters or 2000 code points. If you send a message longer than the limit, TeleSign splits your message into multiple messages.',
+        type: 'text',
         required: true
       },
       {
         key: 'message_type',
-        label: 'Message Type',
-        helpText:
-          'This parameter specifies the traffic type being sent in the message. You can provide one of the following values:\nOTP - One time passwords\nARN - Alerts, reminders, and notifications\nMKT - Marketing traffic.',
+        label: 'Message Type',        
         type: 'string',
         required: true,
-        // default: 'ARN',
-        // choices: {
-        //   OTP: 'One time passwords',
-        //   ARN: 'Alerts, reminders,and notifications',
-        //   MKT: 'Marketing traffic'
-        // }
+        default: 'ARN',
+        choices: {
+          OTP: 'One time passwords',
+          ARN: 'Alerts, reminders,and notifications',
+          MKT: 'Marketing traffic'
+        }
       },
       {
         key: 'country_code',
         label: 'Country Dialing Code',
-        helpText: 'Please enter the country Code. \nExample: UK - country code 44. France - country code 33, Otherwise you may use the Phone Number field to supply country code along with Phone Number.',
+        helpText: 'Example: UK - country code 44. France - country code 33, Otherwise you may use the Phone Number field to supply country code along with Phone Number.',
         type: 'string',
         required: false
       },
       {
         key: 'phone_number',
-        label: 'Phone Number',
-        helpText: 'Please enter the Phone Number.',
+        label: 'Phone Number',        
         type: 'string',
         required: true
       }
@@ -80,27 +76,27 @@ module.exports = {
       {
         key: 'additional_info__message_parts_count',
         type: 'string',
-        label: 'Displays the number of parts your message was split into.'
+        label: 'Number of parts in message'
       },
       {
         key: 'reference_id',
         type: 'string',
-        label: 'A 32-digit hex value used to identify the web service request.'
+        label: 'Reference Id'
       },
       {
         key: 'status__code',
         type: 'string',
-        label: 'Describes the status of your transaction.'
+        label: 'Status Code.'
       },
       {
         key: 'status__description',
         type: 'string',
-        label: 'A text description of the status code.'
+        label: 'Status Text'
       },
       {
         key: 'status__updated_on',
         type: 'string',
-        label: 'timestamp showing when your transaction status was updated last.'
+        label: 'Updated last.'
       }
     ],
     perform: makeRequest,

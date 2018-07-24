@@ -3,24 +3,24 @@
 //const authentication = require('../authentication');
 
 
-const makeRequest = (z, bundle) => {  
+const makeRequest = (z, bundle) => {
   const voice_url = '/v1/voice';
   //url = createUrl(voice_url, bundle);
   baseURL = bundle.authData.baseURL;
-  url = baseURL + voice_url;  
-  let voiceParam = (bundle.inputData.voice==undefined)?'f-en-US':bundle.inputData.voice;
-  let countryCode = (bundle.inputData.country_code==undefined)?'':bundle.inputData.country_code;
+  url = baseURL + voice_url;
+  let voiceParam = (bundle.inputData.voice == undefined) ? 'f-en-US' : bundle.inputData.voice;
+  let countryCode = (bundle.inputData.country_code == undefined) ? '' : bundle.inputData.country_code;
   const responsePromise = z.request({
     url: url,
     method: 'POST',
-    body: 'phone_number='+countryCode+bundle.inputData.phone_number + '&message='+bundle.inputData.message + '&message_type='+bundle.inputData.message_type + '&voice='+voiceParam,
-  
+    body: 'phone_number=' + countryCode + bundle.inputData.phone_number + '&message=' + bundle.inputData.message + '&message_type=' + bundle.inputData.message_type + '&voice=' + voiceParam,
+
     headers: {
       'Content-Type': 'application/json'
     }
-  
+
   });
-  return responsePromise.then(response => {    
+  return responsePromise.then(response => {
     response.throwForStatus();
     return z.JSON.parse(response.content);
   });
@@ -32,7 +32,7 @@ module.exports = {
 
   display: {
     label: 'Send Voice Call',
-    description: "TeleSign's Voice API allows you to easily send voice messages. You can send alerts, reminders, and notifications, or you can send verification messages containing time-based one-time passcodes (TOTP).",
+    description: "'Sends an voice call (alerts, reminders, notifications, or verification messages containing time-based one-time passcodes).",
     hidden: false,
     important: true
   },
@@ -41,17 +41,15 @@ module.exports = {
     inputFields: [
       {
         key: 'message',
-        label: 'Message to Be Sent.',
+        label: 'Message',
         helpText:
-          'Text of the message to be converted to a voice message and sent to the end user. You are limited to 1600 characters or 2000 code points. If you send a very long message, TeleSign splits your message into separate parts. TeleSign recommends against sending messages that require multiple SMSes when possible.',
-        type: 'string',
+          'The message limit is 1600 characters or 2000 code points. If you send a message longer than the limit, TeleSign splits your message into multiple messages.',
+        type: 'text',
         required: true
       },
       {
         key: 'message_type',
-        label: 'Message Type',
-        helpText:
-          'This parameter specifies the traffic type being sent in the message. You can provide one of the following values:\nOTP - One time passwords\nARN - Alerts, reminders, and notifications\nMKT - Marketing traffic.',
+        label: 'Message Type',        
         type: 'string',
         required: true,
         default: 'ARN',
@@ -60,59 +58,86 @@ module.exports = {
           ARN: 'Alerts, reminders,and notifications',
           MKT: 'Marketing traffic'
         }
-      },   
+      },
       {
         key: 'country_code',
         label: 'Country Dialing Code',
-        helpText: 'Please enter the country Code. \nExample: UK - country code 44. France - country code 33, Otherwise you may use the Phone Number field to supply country code along with Phone Number.',
+        helpText: 'Example: UK - country code 44. France - country code 33, Otherwise you may use the Phone Number field to supply country code along with Phone Number.',
         type: 'string',
         required: false
-      },   
+      },
       {
         key: 'phone_number',
-        label: 'Phone Number',
-        helpText: 'Please enter Phone Number. \nPlease use Country Code + Phone Number in case the trigger puts a restriction on output fields. \nFor Example an Email App(it only has subject + body)',
+        label: 'Phone Number',        
         type: 'string',
         required: true
       },
       {
         key: 'voice',
         label: 'Voice',
-        helpText: 'The voice parameter allows you to specify a voice to be used to speak your text to speech message. If you do not specify a voice, the default f-en-US is used. For more info visit [TeleSign](https://enterprise.telesign.com/docs/voice-api#section-request-parameters)',
-        type: 'string',
-        required: false
+        helpText: 'Voice to be used for text to speech message. Default voice is English (US).',
+        type: 'string',        
+        required: false,
+        choices: {
+          'f-zh-HK': 'Chinese (Hong Kong, Cantonese)',
+          'f-zh-CN': 'Chinese (Mandarin)',
+          'f-zh-TW': 'Chinese (Taiwan)',
+          'f-da-DK': 'Danish',
+          'f-nl-NL': 'Dutch',
+          'f-en-AU': 'English (Australian)',
+          'f-en-GB': 'English (UK)',
+          'f-en-US': 'English (US)',
+          'f-en-CA': 'English (Canadian)',
+          'f-en-IN': 'English (India)',
+          'f-fi-FI': 'Finnish',
+          'f-fr-FR': 'French',
+          'f-fr-CA': 'French (Canadian)',
+          'f-de-DE': 'German',
+          'f-it-IT': 'Italian',
+          'f-ja-JP': 'Japanese',
+          'f-ko-KR': 'Korean',
+          'f-nb-NO': 'Norweigan',
+          'f-pl-PL': 'Polish',
+          'f-pt-BR': 'Portuguese (Brazil)',
+          'f-pt-PT': 'Portuguese (Europe)',
+          'f-ru-RU': 'Russian',
+          'f-es-MX': 'Spanish (Mexico)',
+          'f-es-ES': 'Spanish (Spain, Castilian)',
+          'f-ca-ES': 'Spanish (Catalan)',
+          'f-sv-SE': 'Swedish'
+        }
       }
     ],
     outputFields: [
       {
         key: 'additional_info__message_parts_count',
         type: 'string',
-        label: 'Displays the number of parts your message was split into.'
+        label: 'Number of Parts in Message'
       },
       {
         key: 'reference_id',
         type: 'string',
-        label: 'A 32-digit hex value used to identify the web service request.'
+        label: 'Reference Id'
       },
       {
         key: 'voice',
         type: 'string',
-        label: 'The voice tag you selected for language appears here. If you did not use this parameter, the default f-en-US is displayed.'
+        label: 'Voice tag for language selected for language'
       },
       {
         key: 'status__code',
         type: 'string',
-        label: 'Describes the status of your transaction.'
+        label: 'Status Code'
       },
       {
         key: 'status__description',
         type: 'string',
-        label: 'A text description of the status code.'
+        label: 'Status text'
       },
       {
         key: 'status__updated_on',
         type: 'string',
-        label: 'timestamp showing when your transaction status was updated last.'
+        label: 'Updated last'
       }
     ],
     perform: makeRequest,
