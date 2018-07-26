@@ -18,9 +18,9 @@ describe('Creates - Send Call', () => {
 
       inputData: {
         // TODO: Pulled from input fields' default values. Edit if necessary.
-        message: 'I am coming from Zapier, send call',
+        message: process.env.TEST_MESSAGE,
         message_type: 'ARN',
-        phone_number: '917009600580'
+        phone_number: process.env.TEST_PHONE_NUMBER
       }
     };
 

@@ -3,17 +3,27 @@ const { replaceVars } = require('../utils');
 
 const getList = (z, bundle) => {
   //let url = 'https://rest-ww.telesign.com/v1/messaging/0123456789ABCDEF0123456789ABCDEF';
-  let url = 'https://rest-ww.telesign.com/v1/messaging';
+  baseURL = bundle.authData.baseURL?bundle.authData.baseURL:'https://rest-api.telesign.com';
+
+  let authMsgTestURL = '/v1/messaging';
+  url = baseURL + authMsgTestURL;
   url = replaceVars(url, bundle);
-  const responsePromise = z.request({ url });
+  const responsePromise = z.request({ 
+    url: url,
+    method: 'POST',
+    body: 'phone_number=' + bundle.authData.test_phone_number+'&message=Zapier welcomes you to TeleSign'+'&message_type=ARN',
+   });
   return responsePromise.then(response => {
-    if(response.status === 405) 
-    {
-      return 200;      
-    }
-    //console.log('In triggers>init');
+    z.console.log('In triggers>init url getting used is: ' + url); 
+    /*var tsRes = z.JSON.parse(response.content);
+    var res = {"status" : response.status,"description" : tsRes.status.description};
+    response_string = JSON.stringify(res);
+    z.console.log('In triggers>init response is: ' + response_string);*/
+    if(response.status !== 200){
+      throw new Error('The credentials you provided are invalid.');
+    } 
     //response.throwForStatus();
-    //return z.JSON.parse(response.content);
+    return 'Successfully Connected to Zapier';
   });
 };
 

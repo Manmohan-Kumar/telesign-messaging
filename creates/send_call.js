@@ -5,8 +5,8 @@
 
 const makeRequest = (z, bundle) => {
   const voice_url = '/v1/voice';
-  //url = createUrl(voice_url, bundle);
-  baseURL = bundle.authData.baseURL;
+  //url = createUrl(voice_url, bundle);  
+  baseURL = bundle.authData.baseURL?bundle.authData.baseURL:'https://rest-api.telesign.com';
   url = baseURL + voice_url;
   let voiceParam = (bundle.inputData.voice == undefined) ? 'f-en-US' : bundle.inputData.voice;
   let countryCode = (bundle.inputData.country_code == undefined) ? '' : bundle.inputData.country_code;
@@ -32,7 +32,7 @@ module.exports = {
 
   display: {
     label: 'Send Voice Call',
-    description: "'Sends an voice call (alerts, reminders, notifications, or verification messages containing time-based one-time passcodes).",
+    description: "Sends an voice call (alerts, reminders, notifications, or verification messages containing time-based one-time passcodes).",
     hidden: false,
     important: true
   },

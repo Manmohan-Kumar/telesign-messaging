@@ -6,18 +6,12 @@ const authentication = {
 
   test: testTrigger.operation.perform,
 
-  fields: [
-    {
-      key: 'baseURL',
-      label: 'REST Endpoint',
-      helpText: 'REST Endpoint, Customer ID, and API Key can all be found on the Account Settings page under Settings. Navigate to Account Settings at https://portal.telesign.com/portal/account-settings. (For TeleSign Standard customers) or https://teleportal.telesign.com/ (For TeleSign Enterprise customers).',
-      type: 'string',
-      required: true
-    },
+  fields: [    
     {
       key: 'customer_id',
       label: 'Customer ID',      
       type: 'string',
+      helpText: 'Customer ID, API Key, can be found on your TeleSign Portal [Account Settings](https://portal.telesign.com/portal/account-settings) page (For TeleSign Standard customers) or at [Teleportal](https://teleportal.telesign.com) (For TeleSign Enterprise customers).',
       required: true
     },
     {
@@ -25,9 +19,24 @@ const authentication = {
       label: 'API Key',      
       type: 'password',
       required: true
-    }
+    },
+    {
+      key: 'test_phone_number',
+      label: 'Test Phone Number' ,      
+      type: 'string',
+      helpText: 'Used to verify credentials only',
+      required: true
+    },
+    {
+      key: 'baseURL',
+      label: 'REST Endpoint',
+      helpText: 'Telesign URL for Enterprise Customers',
+      type: 'string',
+      required: false
+    },
+
   ],
-  connectionLabel: '{{baseURL}}@{{customer_id}}'    
+  connectionLabel: '{{customer_id}}@{{test_phone_number}}'
 };
 
 module.exports = authentication;

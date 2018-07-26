@@ -18,10 +18,10 @@ describe('Creates - Send SMS', () => {
 
       inputData: {
         // TODO: Pulled from input fields' default values. Edit if necessary.
-        message: 'I am coming from Zapier, send SMS',
+        message: process.env.TEST_MESSAGE,
         message_type: 'ARN',
-        country_code: '91',
-        phone_number: '917009600580'
+        //country_code: '91',
+        phone_number: process.env.TEST_PHONE_NUMBER
       }
     };
 

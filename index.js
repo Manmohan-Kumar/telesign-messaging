@@ -7,6 +7,10 @@ const SendcallCreate =require('./creates/send_call');
 const { replaceVars } = require('./utils');
 
 const maybeIncludeAuth = (request, z, bundle) => {
+  teleSignURL = '{{baseURL}}';
+  if(!teleSignURL){
+    teleSignURL = 'https://rest-api.telesign.com';
+  }
   const mapping = {
     username: '{{customer_id}}',
     password: '{{api_key}}',
@@ -15,9 +19,8 @@ const maybeIncludeAuth = (request, z, bundle) => {
   const username = replaceVars(mapping.username, bundle);
   const password = replaceVars(mapping.password, bundle);
   const encoded = Buffer.from(`${username}:${password}`).toString('base64');
-  request.headers.Authorization = `Basic ${encoded}`;
+  request.headers.Authorization = `Basic ${encoded}`;  
   
-  //console.log("encode  is: " + encoded );
   return request;
 };
 

@@ -3,7 +3,7 @@
 const makeRequest = (z, bundle) => {
     
   const messaging_url = '/v1/messaging';
-  baseURL = bundle.authData.baseURL;  
+  baseURL = bundle.authData.baseURL?bundle.authData.baseURL:'https://rest-api.telesign.com';
   // url = createUrl(messaging_url, bundle);
   url = baseURL + messaging_url;
   let countryCode = (bundle.inputData.country_code==undefined)?'':bundle.inputData.country_code;
