@@ -11,7 +11,7 @@ const authentication = {
       key: 'customer_id',
       label: 'Customer ID',      
       type: 'string',
-      helpText: 'Customer ID, API Key, can be found on your TeleSign Portal [Account Settings](https://portal.telesign.com/portal/account-settings) page (For TeleSign Standard customers) or at [Teleportal](https://teleportal.telesign.com) (For TeleSign Enterprise customers).',
+      helpText: 'Customer ID and API Key can be found on your [TeleSign Portal](https://portal.telesign.com/signup).',
       required: true
     },
     {
@@ -24,7 +24,7 @@ const authentication = {
       key: 'test_phone_number',
       label: 'Test Phone Number' ,      
       type: 'string',
-      helpText: 'Used to verify credentials only',
+      helpText: 'Provide your phone number with the international country code to receive a text to verify your credentials. A text will be sent to the number if successful. E.g. +12141112222.',
       required: true
     },
     {

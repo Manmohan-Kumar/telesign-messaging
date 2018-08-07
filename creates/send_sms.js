@@ -101,9 +101,9 @@ module.exports = {
     ],
     perform: makeRequest,
     sample: {
-      additional_info: { message_parts_count: 1 },
+      external_id: 'external_id',
       reference_id: '0123456789ABCDEF0123456789ABCDEF',
-      status: { code: 290, description: 'Message in progress', updated_on: '2015-10-03T14:51:28.709526Z' }
+      status: { code: 290, description: 'Message in progress' }
     }
   }
 };
