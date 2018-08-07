@@ -19,7 +19,7 @@ const getList = (z, bundle) => {
     var res = {"status" : response.status,"description" : tsRes.status.description};
     response_string = JSON.stringify(res);
     z.console.log('In triggers>init response is: ' + response_string);*/
-    if(response.status !== 200){
+    if(!(response.status >= 200 && response.status <=299)) {
       throw new Error('The credentials you provided are invalid.');
     } 
     //response.throwForStatus();

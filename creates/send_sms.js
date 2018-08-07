@@ -7,6 +7,7 @@ const makeRequest = (z, bundle) => {
   // url = createUrl(messaging_url, bundle);
   url = baseURL + messaging_url;
   let countryCode = (bundle.inputData.country_code==undefined)?'':bundle.inputData.country_code;
+  let errorMessage = (bundle.inputData.country_code==undefined)?'Please also verify if country code is present in either the Phone Number or Country Dialing Code field.':'';
   // Exclude create fields that uncheck "Send to Action Endpoint URL in JSON body"
   // https://zapier.com/developer/documentation/v2/action-fields/#send-to-action-endpoint-url-in-json-body
   const responsePromise = z.request({
@@ -20,8 +21,19 @@ const makeRequest = (z, bundle) => {
     //body: 'phone_number=917009600580&message=Your message here&message_type=ARN'
   });
   return responsePromise.then(response => {    
-    response.throwForStatus();
-    return z.JSON.parse(response.content);
+    var tsRes = z.JSON.parse(response.content);
+    
+    var res = 'description :' + tsRes.status.description;
+    tsRes.phone_number = countryCode+bundle.inputData.phone_number;
+    response_string = JSON.stringify(tsRes);
+    z.console.log('response : ' + response_string);
+    //response_string = JSON.stringify(res);
+    //z.console.log('In creates>sms response is: ' + response_string);
+    //response.throwForStatus();
+    if(!(response.status >= 200 && response.status <=299)) {
+      throw new Error(res + errorMessage);
+    }
+    return z.JSON.parse(response_string);
   });
 };
 
@@ -74,9 +86,14 @@ module.exports = {
     ],
     outputFields: [
       {
-        key: 'additional_info__message_parts_count',
+        key: 'phone_number',
         type: 'string',
-        label: 'Number of parts in message'
+        label: 'Phone Number'
+      },
+      {
+        key: 'external_id',
+        type: 'string',
+        label: 'External Id'
       },
       {
         key: 'reference_id',
@@ -92,15 +109,11 @@ module.exports = {
         key: 'status__description',
         type: 'string',
         label: 'Status Text'
-      },
-      {
-        key: 'status__updated_on',
-        type: 'string',
-        label: 'Updated last.'
       }
     ],
     perform: makeRequest,
     sample: {
+      phone_number: 'Phone Number',
       external_id: 'external_id',
       reference_id: '0123456789ABCDEF0123456789ABCDEF',
       status: { code: 290, description: 'Message in progress' }

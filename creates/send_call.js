@@ -10,6 +10,7 @@ const makeRequest = (z, bundle) => {
   url = baseURL + voice_url;
   let voiceParam = (bundle.inputData.voice == undefined) ? 'f-en-US' : bundle.inputData.voice;
   let countryCode = (bundle.inputData.country_code == undefined) ? '' : bundle.inputData.country_code;
+  let errorMessage = (bundle.inputData.country_code == undefined)?'Please also verify if country code is present in either the Phone Number or Country Dialing Code field.':'';
   const responsePromise = z.request({
     url: url,
     method: 'POST',
@@ -21,8 +22,18 @@ const makeRequest = (z, bundle) => {
 
   });
   return responsePromise.then(response => {
-    response.throwForStatus();
-    return z.JSON.parse(response.content);
+    var tsRes = z.JSON.parse(response.content);
+    var res = 'description :' + tsRes.status.description;
+    tsRes.phone_number = countryCode+bundle.inputData.phone_number;
+    response_string = JSON.stringify(tsRes);
+    z.console.log('response : ' + response_string);
+    //response_string = JSON.stringify(res);
+    //z.console.log('In creates>sms response is: ' + response_string);
+    //response.throwForStatus();
+    if(!(response.status >= 200 && response.status <=299)) {
+      throw new Error(res + errorMessage);
+    }
+    return z.JSON.parse(response_string);
   });
 };
 
@@ -31,8 +42,8 @@ module.exports = {
   noun: 'Call',
 
   display: {
-    label: 'Send Voice Call',
-    description: "Sends an voice call (alerts, reminders, notifications, or verification messages containing time-based one-time passcodes).",
+    label: 'Sends a Voice Call',
+    description: "Sends a voice call (alerts, reminders, notifications, or verification messages containing time-based one-time passcodes).",
     hidden: false,
     important: true
   },
@@ -110,9 +121,9 @@ module.exports = {
     ],
     outputFields: [
       {
-        key: 'additional_info__message_parts_count',
+        key: 'phone_number',
         type: 'string',
-        label: 'Number of Parts in Message'
+        label: 'Phone Number'
       },
       {
         key: 'reference_id',
@@ -120,9 +131,9 @@ module.exports = {
         label: 'Reference Id'
       },
       {
-        key: 'voice',
+        key: 'voice__caller_id',
         type: 'string',
-        label: 'Voice tag for language selected for language'
+        label: 'caller Id'
       },
       {
         key: 'status__code',
@@ -142,9 +153,10 @@ module.exports = {
     ],
     perform: makeRequest,
     sample: {
-      additional_info: { message_parts_count: 1 },
+      phone_number: 'Phone Number',
       reference_id: '0123456789ABCDEF0123456789ABCDEF',
-      status: { code: 290, description: 'Message in progress', updated_on: '2015-10-03T14:51:28.709526Z' }
+      status: { code: 290, description: 'Message in progress', updated_on: '2015-10-03T14:51:28.709526Z' },
+      voice: {caller_id: '+1234434343'}
     }
   }
 };

@@ -1,6 +1,6 @@
 {
   "name": "tele-sign-messaging",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "A super easy to use tool for any one to Send SMS. Please get Customer Id and API Key from https://portal.telesign.com. Or https://teleportal.telesign.com",
   "main": "index.js",
   "scripts": {
@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "lodash": "^4.17.10",
-    "zapier-platform-core": "7.1.0"
+    "zapier-platform-core": "7.2.0"
   },
   "devDependencies": {
     "mocha": "4.0.1",
