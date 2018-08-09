@@ -7,7 +7,7 @@ const makeRequest = (z, bundle) => {
   
   url = baseURL + messaging_url;
   let countryCode = (bundle.inputData.country_code==undefined)?'':bundle.inputData.country_code;
-  let errorMessage = (bundle.inputData.country_code==undefined)?'. Please also verify if country code is present in either the Phone Number or Country Dialing Code field.':'';
+  let errorMessage = (bundle.inputData.country_code==undefined)?' Please also verify if country code is present in either the Phone Number or Country Dialing Code field.':'';
   
   const responsePromise = z.request({
     url: url,
@@ -21,7 +21,7 @@ const makeRequest = (z, bundle) => {
   });
   return responsePromise.then(response => {    
     var tsRes = z.JSON.parse(response.content);
-    var res = 'description :' + tsRes.status.description;
+    var res = 'description: ' + tsRes.status.description;
     tsRes.phone_number = countryCode+bundle.inputData.phone_number;
     response_string = JSON.stringify(tsRes);
     z.console.log('response : ' + response_string);    
