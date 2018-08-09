@@ -16,8 +16,7 @@ describe('Creates - Send Call', () => {
         customer_id: process.env.CUSTOMER_ID
       },
 
-      inputData: {
-        // TODO: Pulled from input fields' default values. Edit if necessary.
+      inputData: {        
         message: process.env.TEST_MESSAGE,
         message_type: 'ARN',
         phone_number: process.env.TEST_PHONE_NUMBER

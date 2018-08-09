@@ -4,32 +4,27 @@ const makeRequest = (z, bundle) => {
     
   const messaging_url = '/v1/messaging';
   baseURL = bundle.authData.baseURL?bundle.authData.baseURL:'https://rest-api.telesign.com';
-  // url = createUrl(messaging_url, bundle);
+  
   url = baseURL + messaging_url;
   let countryCode = (bundle.inputData.country_code==undefined)?'':bundle.inputData.country_code;
-  let errorMessage = (bundle.inputData.country_code==undefined)?'Please also verify if country code is present in either the Phone Number or Country Dialing Code field.':'';
-  // Exclude create fields that uncheck "Send to Action Endpoint URL in JSON body"
-  // https://zapier.com/developer/documentation/v2/action-fields/#send-to-action-endpoint-url-in-json-body
+  let errorMessage = (bundle.inputData.country_code==undefined)?'. Please also verify if country code is present in either the Phone Number or Country Dialing Code field.':'';
+  
   const responsePromise = z.request({
     url: url,
     method: 'POST',
     body: 'phone_number='+countryCode+bundle.inputData.phone_number+'&message='+bundle.inputData.message+'&message_type='+bundle.inputData.message_type,
-    //body: bundle.inputData,
+  
     headers: {
       'Content-Type': 'application/json'
     }
-    //body: 'phone_number=917009600580&message=Your message here&message_type=ARN'
+  
   });
   return responsePromise.then(response => {    
     var tsRes = z.JSON.parse(response.content);
-    
     var res = 'description :' + tsRes.status.description;
     tsRes.phone_number = countryCode+bundle.inputData.phone_number;
     response_string = JSON.stringify(tsRes);
-    z.console.log('response : ' + response_string);
-    //response_string = JSON.stringify(res);
-    //z.console.log('In creates>sms response is: ' + response_string);
-    //response.throwForStatus();
+    z.console.log('response : ' + response_string);    
     if(!(response.status >= 200 && response.status <=299)) {
       throw new Error(res + errorMessage);
     }
@@ -103,7 +98,7 @@ module.exports = {
       {
         key: 'status__code',
         type: 'string',
-        label: 'Status Code.'
+        label: 'Status Code'
       },
       {
         key: 'status__description',

@@ -1,16 +1,11 @@
-// "Create" stub created by 'zapier convert'. This is just a stub - you will need to edit!
-//const { createUrl } = require('../utils');
-//const authentication = require('../authentication');
-
-
 const makeRequest = (z, bundle) => {
   const voice_url = '/v1/voice';
-  //url = createUrl(voice_url, bundle);  
+  
   baseURL = bundle.authData.baseURL?bundle.authData.baseURL:'https://rest-api.telesign.com';
   url = baseURL + voice_url;
   let voiceParam = (bundle.inputData.voice == undefined) ? 'f-en-US' : bundle.inputData.voice;
   let countryCode = (bundle.inputData.country_code == undefined) ? '' : bundle.inputData.country_code;
-  let errorMessage = (bundle.inputData.country_code == undefined)?'Please also verify if country code is present in either the Phone Number or Country Dialing Code field.':'';
+  let errorMessage = (bundle.inputData.country_code == undefined)?'. Please also verify if country code is present in either the Phone Number or Country Dialing Code field.':'';
   const responsePromise = z.request({
     url: url,
     method: 'POST',
@@ -126,6 +121,11 @@ module.exports = {
         label: 'Phone Number'
       },
       {
+        key: 'external_id',
+        type: 'string',
+        label: 'External Id'
+      },
+      {
         key: 'reference_id',
         type: 'string',
         label: 'Reference Id'
@@ -154,6 +154,7 @@ module.exports = {
     perform: makeRequest,
     sample: {
       phone_number: 'Phone Number',
+      external_id: 'external_id',
       reference_id: '0123456789ABCDEF0123456789ABCDEF',
       status: { code: 290, description: 'Message in progress', updated_on: '2015-10-03T14:51:28.709526Z' },
       voice: {caller_id: '+1234434343'}
