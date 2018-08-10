@@ -20,8 +20,7 @@ const getList = (z, bundle) => {
       } else if((tsRes.status.code == 11000)||(tsRes.status.code == 11001)){ // Invalid Phone Number or country code
         errorMessage = "description: " + tsRes.status.description;
       } else {
-        z.console.log('In triggers>init response is: ' + response_string);
-        errorMessage = "description: " + tsRes.status.description + '. ' + errorMessage;
+        errorMessage = "description: " + tsRes.status.description + ' ' + errorMessage;
       }
       z.console.log('In triggers>init url getting used is: ' + url + ' Telesign returned status code as ' + tsRes.status.code); 
       throw new Error(errorMessage);   
