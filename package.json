@@ -1,6 +1,6 @@
 {
   "name": "tele-sign-messaging",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A super easy to use tool for any one to Send SMS and Voice Calls. Please get Customer Id and API Key from https://portal.telesign.com. Or https://teleportal.telesign.com",
   "main": "index.js",
   "scripts": {

@@ -4,12 +4,11 @@ const makeRequest = (z, bundle) => {
   baseURL = bundle.authData.baseURL?bundle.authData.baseURL:'https://rest-api.telesign.com';
   url = baseURL + voice_url;
   let voiceParam = (bundle.inputData.voice == undefined) ? 'f-en-US' : bundle.inputData.voice;
-  let countryCode = (bundle.inputData.country_code == undefined) ? '' : bundle.inputData.country_code;
-  let errorMessage = (bundle.inputData.country_code == undefined)?' Please also verify if country code is present in either the Phone Number or Country Dialing Code field.':'';
+  
   const responsePromise = z.request({
     url: url,
     method: 'POST',
-    body: 'phone_number=' + countryCode + bundle.inputData.phone_number + '&message=' + bundle.inputData.message + '&message_type=' + bundle.inputData.message_type + '&voice=' + voiceParam,
+    body: 'phone_number=' + bundle.inputData.phone_number + '&message=' + bundle.inputData.message + '&message_type=' + bundle.inputData.message_type + '&voice=' + voiceParam,
 
     headers: {
       'Content-Type': 'application/json'
@@ -19,14 +18,11 @@ const makeRequest = (z, bundle) => {
   return responsePromise.then(response => {
     var tsRes = z.JSON.parse(response.content);
     var res = 'description: ' + tsRes.status.description;
-    tsRes.phone_number = countryCode+bundle.inputData.phone_number;
+    tsRes.phone_number = bundle.inputData.phone_number;
     response_string = JSON.stringify(tsRes);
     z.console.log('response : ' + response_string);
-    //response_string = JSON.stringify(res);
-    //z.console.log('In creates>sms response is: ' + response_string);
-    //response.throwForStatus();
     if(!(response.status >= 200 && response.status <=299)) {
-      throw new Error(res + errorMessage);
+      throw new Error(res);
     }
     return z.JSON.parse(response_string);
   });
@@ -64,17 +60,11 @@ module.exports = {
           ARN: 'Alerts, reminders,and notifications',
           MKT: 'Marketing traffic'
         }
-      },
-      {
-        key: 'country_code',
-        label: 'Country Dialing Code',
-        helpText: 'Example: UK - country code 44. France - country code 33, Otherwise you may use the Phone Number field to supply country code along with Phone Number.',
-        type: 'string',
-        required: false
-      },
+      },      
       {
         key: 'phone_number',
-        label: 'Phone Number',        
+        label: 'Phone Number',
+        helpText: 'Please enter Phone Number prefixed with country code. Example: UK - country code 44, phone number 7911123456 to be entered as 447911123456. Trial account users should enter verified Phone Number.',
         type: 'string',
         required: true
       },

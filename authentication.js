@@ -24,15 +24,16 @@ const authentication = {
       key: 'test_phone_number',
       label: 'Test Phone Number' ,      
       type: 'string',
-      helpText: 'Provide your phone number with the international country code to receive a text to verify your credentials. A text will be sent to the number if successful. E.g. +12141112222.',
+      helpText: 'Provide your phone number with the international country code to receive a text to verify your credentials. A text will be sent to the number if successful. E.g. +12141112222',
       required: true
     },
     {
       key: 'baseURL',
-      label: 'REST Endpoint',
-      helpText: 'Telesign URL for Enterprise Customers',
+      label: 'TeleSign URL',
+      helpText: 'For [Enterprise](https://portal.telesign.com/login) Customers please change to https://rest-ww.telesign.com',
       type: 'string',
-      required: false
+      required: true,
+      default: 'https://rest-api.telesign.com'
     },
 
   ],
