@@ -1,30 +1,35 @@
 const { replaceVars } = require('../utils');
 
 const getList = (z, bundle) => {  
-  baseURL = bundle.authData.baseURL?bundle.authData.baseURL:'https://rest-api.telesign.com';
+  baseURL = bundle.authData.baseURL?bundle.authData.baseURL:'https://rest-api.telesign.com';  
+  let authTestURL = '/v1/phoneid/' + '18008503485';
 
-  let authTestURL = '/v1/phoneid/' + bundle.authData.test_phone_number;
   url = baseURL + authTestURL;
   url = replaceVars(url, bundle);
-  const responsePromise = z.request({ 
+  const responsePromise = z.request({
     url: url,
     method: 'POST'
    });
   return responsePromise.then(response => {
-    let errorMessage = 'The credentials you provided are invalid.';
+    let successMsg = 'Authentication successful';
+    let errorMessage = 'The Customer ID / API Key you provided are invalid.';
+    let eRATE_LIMIT = 'Please try again.';
     if(!(response.status >= 200 && response.status <=299)) {
       var tsRes = z.JSON.parse(response.content);
-      if((tsRes.status.code == 10028) || (tsRes.status.code == 10009)){// Missing Authorization Header
-        errorMessage = "description: " + errorMessage;
-      } else if((tsRes.status.code == 11000)||(tsRes.status.code == 11001)){ // Invalid Phone Number or country code
-        errorMessage = "description: " + tsRes.status.description;
-      } else {
-        errorMessage = "description: " + tsRes.status.description + ' ' + errorMessage;
+      if((tsRes.status.code == 10033)||(tsRes.status.code == 10012)){
+        response.status = 200;
+        return successMsg;
       }
-      z.console.log('In triggers>init url getting used is: ' + url + ' Telesign returned status code as ' + tsRes.status.code); 
+      if((tsRes.status.code == 10028) || (tsRes.status.code == 10009)){
+        errorMessage = "description: " + errorMessage;
+      } else if(tsRes.status.code == 10019){
+        errorMessage = "description: " + eRATE_LIMIT;
+      } else {
+        errorMessage = "description: " + tsRes.status.description;
+      }      
       throw new Error(errorMessage);   
     }     
-    return 'Successfully Connected to Zapier';
+    return successMsg;
   });
 };
 
@@ -52,19 +57,7 @@ module.exports = {
         label: 'Arn',
         type: 'string',        
         default: 'ARN'
-      },
-      {
-        key: 'country_code',
-        label: 'Country Code',
-        type: 'string',        
-        default: '91'
-      },
-      {
-        key: 'phone_number',
-        label: 'Phone_number',
-        type: 'string',        
-        default: '917003400580'
-      }
+      }      
     ],
     outputFields: [      
       {

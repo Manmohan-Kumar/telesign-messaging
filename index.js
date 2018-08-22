@@ -1,5 +1,3 @@
-// Created by 'zapier convert'. This is just a stub - you will need to edit!
-
 const authentication = require('./authentication');
 const InitTrigger = require('./triggers/init');
 const SendsmsCreate = require('./creates/send_sms');

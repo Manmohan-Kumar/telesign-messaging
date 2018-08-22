@@ -20,13 +20,6 @@ const authentication = {
       required: true
     },
     {
-      key: 'test_phone_number',
-      label: 'Test Phone Number' ,      
-      type: 'string',
-      helpText: 'Provide your phone number with the international country code to verify your credentials. E.g. +12141112222',
-      required: true
-    },
-    {
       key: 'baseURL',
       label: 'TeleSign URL',
       helpText: 'For [Enterprise](https://portal.telesign.com/login) Customers please change to https://rest-ww.telesign.com',
@@ -36,7 +29,7 @@ const authentication = {
     },
 
   ],
-  connectionLabel: '{{customer_id}}@{{test_phone_number}}'
+  connectionLabel: '{{customer_id}}'
 };
 
 module.exports = authentication;

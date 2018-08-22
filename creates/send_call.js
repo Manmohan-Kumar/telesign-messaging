@@ -17,12 +17,14 @@ const makeRequest = (z, bundle) => {
   });
   return responsePromise.then(response => {
     var tsRes = z.JSON.parse(response.content);
-    var res = 'description: ' + tsRes.status.description;
+    var errorMessage = 'description: ' + tsRes.status.description;
     tsRes.phone_number = bundle.inputData.phone_number;
-    response_string = JSON.stringify(tsRes);
-    z.console.log('response : ' + response_string);
+    response_string = JSON.stringify(tsRes);    
     if(!(response.status >= 200 && response.status <=299)) {
-      throw new Error(res);
+      if(tsRes.status.code == 10034){
+        errorMessage = "description: " + "Voice calls with Message Type ‘Marketing’ are blocked by default in the country of your phone number.  Please contact [TeleSign Support](https://portal.telesign.com/portal/contact-us) to request an exception";
+      }
+      throw new Error(errorMessage);
     }
     return z.JSON.parse(response_string);
   });
