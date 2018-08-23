@@ -1,17 +1,20 @@
+var qs = require("querystring");
 const makeRequest = (z, bundle) => {
   const voice_url = '/v1/voice';
-  
   baseURL = bundle.authData.baseURL?bundle.authData.baseURL:'https://rest-api.telesign.com';
   url = baseURL + voice_url;
   let voiceParam = (bundle.inputData.voice == undefined) ? 'f-en-US' : bundle.inputData.voice;
-  
   const responsePromise = z.request({
     url: url,
     method: 'POST',
-    body: 'phone_number=' + bundle.inputData.phone_number + '&message=' + bundle.inputData.message + '&message_type=' + bundle.inputData.message_type + '&voice=' + voiceParam,
+    body: qs.stringify({
+      phone_number: bundle.inputData.phone_number, 
+      message: bundle.inputData.message, 
+      message_type: bundle.inputData.message_type, 
+      voice: voiceParam}),
 
     headers: {
-      'Content-Type': 'application/json'
+      "content-type": "application/x-www-form-urlencoded"
     }
 
   });

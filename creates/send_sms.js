@@ -1,19 +1,22 @@
-// "Create" stub created by 'zapier convert'. This is just a stub - you will need to edit!
-//const { createUrl } = require('../utils');
+var qs = require("querystring");
 const makeRequest = (z, bundle) => {
     
   const messaging_url = '/v1/messaging';
   baseURL = bundle.authData.baseURL?bundle.authData.baseURL:'https://rest-api.telesign.com';
   
   url = baseURL + messaging_url;
-  
+    
   const responsePromise = z.request({
     url: url,
     method: 'POST',  
-    body: 'phone_number='+bundle.inputData.phone_number+'&message='+bundle.inputData.message+'&message_type='+bundle.inputData.message_type,
+    body: qs.stringify({
+      phone_number:bundle.inputData.phone_number,
+      message:bundle.inputData.message,
+      message_type:bundle.inputData.message_type
+    }),
   
     headers: {
-      'Content-Type': 'application/json'
+      "content-type": "application/x-www-form-urlencoded"
     }
   
   });
