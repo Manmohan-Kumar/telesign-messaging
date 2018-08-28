@@ -10,7 +10,7 @@ const authentication = {
       key: 'customer_id',
       label: 'Customer ID',      
       type: 'string',
-      helpText: 'Customer ID and API Key can be found on your [TeleSign Portal](https://portal.telesign.com/signup).',
+      helpText: 'Customer ID and API Key can be found in your [TeleSign Portal](https://portal.telesign.com/portal/account-settings) account settings.',
       required: true
     },
     {
@@ -22,7 +22,7 @@ const authentication = {
     {
       key: 'baseURL',
       label: 'TeleSign URL',
-      helpText: 'For [Enterprise](https://portal.telesign.com/login) Customers please change to https://rest-ww.telesign.com',
+      helpText: 'Prepopulated for TeleSign Standard customers. For [Enterprise](https://portal.telesign.com/login) Customers please change to https://rest-ww.telesign.com',
       type: 'string',
       required: true,
       default: 'https://rest-api.telesign.com'

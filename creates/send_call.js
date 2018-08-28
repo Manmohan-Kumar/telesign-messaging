@@ -25,7 +25,7 @@ const makeRequest = (z, bundle) => {
     response_string = JSON.stringify(tsRes);    
     if(!(response.status >= 200 && response.status <=299)) {
       if(tsRes.status.code == 10034){
-        errorMessage = "description: " + "Voice calls with Message Type ‘Marketing’ are blocked by default in the country of your phone number.  Please contact [TeleSign Support](https://portal.telesign.com/portal/contact-us) to request an exception";
+        errorMessage = "description: " + "Voice calls with Message Type ‘Marketing’ are blocked by default in the country of your phone number.  Please contact TeleSign Support to request an exception.";
       }
       throw new Error(errorMessage);
     }
@@ -38,8 +38,8 @@ module.exports = {
   noun: 'Call',
 
   display: {
-    label: 'Sends a Voice Call',
-    description: "Sends a voice call (alerts, reminders, notifications, or verification messages containing time-based one-time passcodes).",
+    label: 'Send Voice',
+    description: "Sends a voice call to a given phone number.",
     hidden: false,
     important: true
   },
